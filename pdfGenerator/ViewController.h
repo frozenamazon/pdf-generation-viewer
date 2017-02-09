@@ -9,7 +9,15 @@
 #import <UIKit/UIKit.h>
 
 @interface ViewController : UIViewController
+{
+    UIWebView *webView;
+    CGSize _pageSize;
+}
+@property (nonatomic,retain) IBOutlet UIWebView *webView;
 
+- (IBAction) htmlToPdfButtonPressed:(id)sender;
+- (IBAction)viewPdf:(id)sender;
+- (IBAction)GenMultiPage:(id)sender;
 
 @end
 

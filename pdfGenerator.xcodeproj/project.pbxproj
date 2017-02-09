@@ -13,6 +13,8 @@
 		42036AA31E4C80C600D345D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42036AA11E4C80C600D345D2 /* Main.storyboard */; };
 		42036AA51E4C80C600D345D2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42036AA41E4C80C600D345D2 /* Assets.xcassets */; };
 		42036AA81E4C80C600D345D2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42036AA61E4C80C600D345D2 /* LaunchScreen.storyboard */; };
+		42036AB21E4C923900D345D2 /* Demo.html in Resources */ = {isa = PBXBuildFile; fileRef = 42036AB11E4C923900D345D2 /* Demo.html */; };
+		42036AB91E4CCA6E00D345D2 /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 42036AB81E4CCA6E00D345D2 /* test.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		42036AA41E4C80C600D345D2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		42036AA71E4C80C600D345D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		42036AA91E4C80C600D345D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		42036AB11E4C923900D345D2 /* Demo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Demo.html; sourceTree = "<group>"; };
+		42036AB81E4CCA6E00D345D2 /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,8 @@
 			children = (
 				42036A9B1E4C80C600D345D2 /* AppDelegate.h */,
 				42036A9C1E4C80C600D345D2 /* AppDelegate.m */,
+				42036AB11E4C923900D345D2 /* Demo.html */,
+				42036AB81E4CCA6E00D345D2 /* test.png */,
 				42036A9E1E4C80C600D345D2 /* ViewController.h */,
 				42036A9F1E4C80C600D345D2 /* ViewController.m */,
 				42036AA11E4C80C600D345D2 /* Main.storyboard */,
@@ -138,8 +144,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				42036AA81E4C80C600D345D2 /* LaunchScreen.storyboard in Resources */,
+				42036AB21E4C923900D345D2 /* Demo.html in Resources */,
 				42036AA51E4C80C600D345D2 /* Assets.xcassets in Resources */,
 				42036AA31E4C80C600D345D2 /* Main.storyboard in Resources */,
+				42036AB91E4CCA6E00D345D2 /* test.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
