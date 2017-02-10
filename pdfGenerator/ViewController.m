@@ -44,9 +44,9 @@
     UIGraphicsBeginPDFPageWithInfo(CGRectMake(0, 0, _pageSize.width, _pageSize.height), nil);
 }
 
-- (CGRect)addText:(NSString*)text withFrame:(CGRect)frame fontSize:(float)fontSize {
+- (float)addText:(NSString*)text atPos:(float)posY {
     
-    UIFont *font = [UIFont systemFontOfSize:fontSize];
+    UIFont *font = [UIFont systemFontOfSize:14];
     
     NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     /// Set line break mode
@@ -56,58 +56,50 @@
                                   NSParagraphStyleAttributeName: paragraphStyle };
     
     CGRect rect = [text boundingRectWithSize:CGSizeMake(_pageSize.width, _pageSize.height) options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil];
-    float textWidth = frame.size.width;
+    float textWidth = _pageSize.width - kPadding * 2;
     
-    if (textWidth < rect.size.width)
-        textWidth = rect.size.width;
-    if (textWidth > _pageSize.width)
-        textWidth = _pageSize.width - frame.origin.x;
-    
-    CGRect renderingRect = CGRectMake(frame.origin.x, frame.origin.y, textWidth, rect.size.height);
+    CGRect renderingRect = CGRectMake(kPadding, posY, textWidth, rect.size.height);
     [text drawInRect:renderingRect withAttributes:attributes];
     
-    frame = CGRectMake(frame.origin.x, frame.origin.y, rect.size.width, rect.size.height);
-    
-    return frame;
+    return renderingRect.origin.y + rect.size.height;
 }
 
-- (CGRect)addLineWithFrame:(CGRect)frame withColor:(UIColor*)color {
+- (float)addLineWithFrame:(float)posY withColor:(UIColor*)color withThickness:(float)width {
     CGContextRef currentContext = UIGraphicsGetCurrentContext();
     
     CGContextSetStrokeColorWithColor(currentContext, color.CGColor);
     // this is the thickness of the line
-    CGContextSetLineWidth(currentContext, frame.size.height);
+    CGContextSetLineWidth(currentContext, width);
     
-    CGPoint startPoint = frame.origin;
-    CGPoint endPoint = CGPointMake(frame.origin.x + frame.size.width, frame.origin.y);
+    CGPoint startPoint = CGPointMake(kPadding, posY + kPadding);
+    CGPoint endPoint = CGPointMake(_pageSize.width - 2 * kPadding, posY + kPadding);
     CGContextBeginPath(currentContext);
     CGContextMoveToPoint(currentContext, startPoint.x, startPoint.y);
     CGContextAddLineToPoint(currentContext, endPoint.x, endPoint.y);
     
     CGContextClosePath(currentContext);
     CGContextDrawPath(currentContext, kCGPathFillStroke);
-    return frame;
+    return endPoint.y;
 }
 
-- (CGRect)addImage:(UIImage*)image atPoint:(CGPoint)point {
-    CGRect imageFrame = CGRectMake(point.x, point.y, image.size.width, image.size.height);
+- (float)addImage:(UIImage*)image atPos:(float)posY {
+    CGRect imageFrame = CGRectMake((_pageSize.width/2)-(image.size.width/2), posY + kPadding, image.size.width, image.size.height);
     [image drawInRect:imageFrame];
-    return imageFrame;
+    return imageFrame.origin.y + imageFrame.size.height;
 }
 
 - (IBAction) htmlToPdfButtonPressed:(id)sender {
     [self setupPDFDocumentNamed:@"Yoshi" Width:850 Height:1100];
     [self beginPDFPage];
     
-    CGRect textRect = [self addText:@"This is some nice text here, don't you agree?"
-                          withFrame:CGRectMake(kPadding, kPadding, 400, 200) fontSize:48.0f];
+    float nextPos = kPadding;
     
-    CGRect blueLineRect = [self addLineWithFrame:CGRectMake(kPadding, textRect.origin.y + textRect.size.height + kPadding, _pageSize.width - kPadding*2, 4)
-                                       withColor:[UIColor blueColor]];
+    nextPos = [self addText:@"This is some nice text here, don't you agree?" atPos:kPadding];
+    
+    nextPos = [self addLineWithFrame:nextPos withColor:[UIColor blueColor] withThickness:1];
     UIImage *anImage = [UIImage imageNamed:@"test.png"];
-    CGRect imageRect = [self addImage:anImage
-                              atPoint:CGPointMake((_pageSize.width/2)-(anImage.size.width/2), blueLineRect.origin.y + blueLineRect.size.height + kPadding)];
-    [self addLineWithFrame:CGRectMake(kPadding, imageRect.origin.y + imageRect.size.height + kPadding, _pageSize.width - kPadding*2, 4) withColor:[UIColor redColor]];
+    nextPos = [self addImage:anImage atPos:nextPos];
+    [self addLineWithFrame:nextPos withColor:[UIColor redColor] withThickness:1];
     
     [self finishPDF];
     
@@ -126,14 +118,12 @@
 
 - (IBAction)GenMultiPage:(id)sender {
     
-    [self setupPDFDocumentNamed:@"Yoshi" Width:850 Height:1100];
+    [self setupPDFDocumentNamed:@"CurrentView" Width:850 Height:1100];
     [self beginPDFPage];
-    UIView* testView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 1024.0f, 768.0f)];
-    testView.backgroundColor = [UIColor blueColor];
     NSMutableData* pdfData = [NSMutableData data];
     CGContextRef pdfContext = UIGraphicsGetCurrentContext();
     CGContextScaleCTM(pdfContext, 0.773f, 0.773f);
-    [testView.layer renderInContext:pdfContext];
+    [self.view.layer renderInContext:pdfContext];
     
     UIGraphicsEndPDFContext();
 }
